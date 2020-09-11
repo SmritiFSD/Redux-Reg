@@ -33,7 +33,7 @@ import {
       case FETCH_USERS_REQUEST:
         return {
           loading: true,
-          users: action.payload,
+          // users: action.payload,
         }
       case FETCH_USERS_SUCCESS:
         return {

@@ -22,15 +22,19 @@ import {
 } from '../constant/types'
 
 export const fetchUsers = (data) => {
-  return dispatch => {
+  return (dispatch) => {
     dispatch(fetchUsersRequest())
       fetch('http://localhost/mycrudopp_php/insert.php',{
           method:'POST',
           body:JSON.stringify(data)
+          
       })
-      .then(response => {
+      // .then(response => response.json())
+      .then((response) => {
+        data['id']=response;
         // response.data is the users
-        const users = response.data
+        const users = data
+        // console.log(data)
         dispatch(fetchUsersSuccess(users))
       })
       .catch(error => {
@@ -43,7 +47,7 @@ export const fetchUsers = (data) => {
 export const fetchUsersRequest = users => {
   return {
     type: FETCH_USERS_REQUEST,
-    payload: users
+    // payload: users
   }
 }
 

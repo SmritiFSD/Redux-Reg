@@ -6,7 +6,8 @@ import {
   Validators,
 } from "react-reactive-form";
 import { connect } from 'react-redux';
-import * as actions from '../action/userAction'
+import * as actions from '../action/userAction';
+
 const TextInput = ({ handler, touched, hasError, meta }) => (
   <div>
     <input placeholder={`Enter ${meta.label}`} {...handler()} />
@@ -39,6 +40,7 @@ class UserForm extends Component {
     e.preventDefault();
     console.log("Form values", this.loginForm.value);
     this.props.fetchUsers(this.loginForm.value);
+    localStorage.setItem('document', JSON.stringify(this.loginForm.value));
   };
 
   render() {
