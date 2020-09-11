@@ -1,66 +1,94 @@
-// import {CREATE_USER} from '../constant/types';
-// export const addUser = (data) => {
-//     return dispatch => {
-//         fetch('http://localhost/mycrudopp_php/insert.php',{
-//             method:'POST',
-//             body:JSON.stringify(data)
-//         }).then((res)=>{ return res.json()})
-//         .then((resdata)=>{
-//             data['id']=resdata;
-//             return dispatch({
-//                 type: CREATE_USER,
-//                 payload:data
-//             })
-//         })
-//     }
-// }
-// import axios from 'axios'
 import {
-  FETCH_USERS_REQUEST,
-  FETCH_USERS_SUCCESS,
-  FETCH_USERS_FAILURE
-} from '../constant/types'
+  USERS_REGISTER_REQUEST,
+  USERS_REGISTER_SUCCESS,
+  USERS_REGISTER_FAILURE,
+  USERS_LOGIN_REQUEST,
+  USERS_LOGIN_SUCCESS,
+  USERS_LOGIN_FAILURE
+} from "../constant/types";
 
+//Register User//
 export const fetchUsers = (data) => {
   return (dispatch) => {
-    dispatch(fetchUsersRequest())
-      fetch('http://localhost/mycrudopp_php/insert.php',{
-          method:'POST',
-          body:JSON.stringify(data)
-          
+    dispatch(fetchUsersRequest());
+    fetch("http://localhost/mycrudopp_php/insert.php", {
+      method: "POST",
+      body: JSON.stringify(data),
+    })
+      .then((res) => {
+        data["id"] = res;
+        const users = data;
+        dispatch(fetchUsersSuccess(users));
       })
-      // .then(response => response.json())
-      .then((response) => {
-        data['id']=response;
-        // response.data is the users
-        const users = data
-        // console.log(data)
-        dispatch(fetchUsersSuccess(users))
+      .catch((error) => {
+        dispatch(fetchUsersFailure(error.message));
+      });
+  };
+};
+
+export const fetchUsersRequest = () => {
+  return {
+    type: USERS_REGISTER_REQUEST,
+  };
+};
+
+export const fetchUsersSuccess = (users) => {
+  return {
+    type: USERS_REGISTER_SUCCESS,
+    payload: users,
+  };
+};
+
+export const fetchUsersFailure = (error) => {
+  return {
+    type: USERS_REGISTER_FAILURE,
+    payload: error,
+  };
+};
+
+
+
+//Login User//
+export const loginUsers = (data) => {
+  return (dispatch) => {
+    dispatch(loginUsersRequest());
+    fetch("http://localhost/mycrudopp_php/login.php", {
+      method: "POST",
+      body: JSON.stringify(data),
+    })
+      .then((res) => {
+        // data["id"] = res;
+        const users = data;
+        if (users.status === "success") {
+          alert(users.message);
+        } else {
+          alert(users.message);
+        }
+        console.log(users);
+        dispatch(loginUsersSuccess(users));
       })
-      .catch(error => {
-        // error.message is the error message
-        dispatch(fetchUsersFailure(error.message))
-      })
-  }
-}
+      .catch((error) => {
+        dispatch(loginUsersFailure(error.message));
+      });
+  };
+};
 
-export const fetchUsersRequest = users => {
+export const loginUsersRequest = () => {
   return {
-    type: FETCH_USERS_REQUEST,
-    // payload: users
-  }
-}
+    type: USERS_LOGIN_REQUEST,
+  };
+};
 
-export const fetchUsersSuccess = users => {
+export const loginUsersSuccess = (users) => {
   return {
-    type: FETCH_USERS_SUCCESS,
-    payload: users
-  }
-}
+    type: USERS_LOGIN_SUCCESS,
+    payload: users,
+  };
+};
 
-export const fetchUsersFailure = error => {
+export const loginUsersFailure = (error) => {
   return {
-    type: FETCH_USERS_FAILURE,
-    payload: error
-  }
-}
+    type: USERS_LOGIN_FAILURE,
+    payload: error,
+  };
+};

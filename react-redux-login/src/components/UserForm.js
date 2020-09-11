@@ -18,12 +18,7 @@ const TextInput = ({ handler, touched, hasError, meta }) => (
 );
 
 class UserForm extends Component {
-  constructor() {
-    super();
-    this.state = {
-      redirect: false,
-    };
-  }
+ 
   loginForm = FormBuilder.group({
     fname: ["", Validators.required],
     lname: ["", Validators.required],
@@ -38,9 +33,10 @@ class UserForm extends Component {
   };
   handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Form values", this.loginForm.value);
-    this.props.fetchUsers(this.loginForm.value);
-    localStorage.setItem('document', JSON.stringify(this.loginForm.value));
+    const data = this.loginForm.value;
+    console.log("Form values", data);
+    this.props.fetchUsers(data);
+    localStorage.setItem('Register User', JSON.stringify(data));
   };
 
   render() {
@@ -49,7 +45,7 @@ class UserForm extends Component {
         <div className="container py-3">
           <div className="row">
             <div className="mx-auto col-sm-6">
-              <div className="card">
+              <div className="card shadow">
                 <FieldGroup
                   control={this.loginForm}
                   render={({ get, invalid }) => (
